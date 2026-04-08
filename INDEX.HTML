@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badri Birthday Experience 🎬</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#050510;color:#fff;overflow:hidden}
+
+.intro{position:fixed;inset:0;background:#000;display:flex;justify-content:center;align-items:center;z-index:9999;flex-direction:column;animation:fadeOut 4s ease forwards 4s}
+.intro h1{animation:zoom 4s ease}
+@keyframes zoom{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+
+.main{opacity:0;animation:showMain 2s ease forwards 5s}
+@keyframes showMain{to{opacity:1}}
+
+header{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:radial-gradient(circle,#1a1a3a,#050510)}
+
+.name-anim{
+ font-size:4rem;
+ background:linear-gradient(90deg,#ff8a00,#ff0080);
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+ border-right:3px solid white;
+ white-space:nowrap;
+ overflow:hidden;
+ width:0;
+ animation:typing 3s steps(20,end) forwards, blink .8s infinite;
+}
+
+@keyframes typing{to{width:100%}}
+@keyframes blink{50%{border-color:transparent}}
+
+.btn{margin-top:30px;padding:14px 30px;border:none;border-radius:40px;background:linear-gradient(90deg,#ff8a00,#ff0080);color:#fff;cursor:pointer}
+.countdown{margin-top:15px;color:#ffcc70}
+
+.chat{padding:60px 20px;max-width:500px;margin:auto}
+.msg{background:#1e1e2f;padding:12px 15px;border-radius:15px;margin:10px 0;opacity:0;transform:translateY(20px);transition:.5s}
+.msg.show{opacity:1;transform:translateY(0)}
+
+.gallery{padding:50px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card img{width:100%;border-radius:15px}
+
+.final{text-align:center;padding:60px;font-size:1.5rem;opacity:0;transition:1s}
+
+canvas{position:fixed;inset:0;pointer-events:none}
+footer{text-align:center;padding:20px;opacity:.5}
+
+</style>
+</head>
+<body>
+
+<div class="intro"><h1>Loading Memories... 🎬</h1></div>
+
+<audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+<div class="main">
+<header>
+<div class="name-anim">Happy Birthday Badri 🎉</div>
+<p>10 April — My Brother 💙</p>
+<div class="countdown" id="countdown"></div>
+<button class="btn" onclick="startExperience()">Start Surprise 🎁</button>
+</header>
+
+<section class="chat" id="chat">
+<div class="msg">Bro remember our first memory? 😄</div>
+<div class="msg">All those late night talks...</div>
+<div class="msg">You always stood with me 💯</div>
+<div class="msg">You are not just friend... ❤️</div>
+<div class="msg">You are family 🔥</div>
+</section>
+
+<section class="gallery">
+<div class="card"><img src="https://via.placeholder.com/400x300?text=Memory+1"></div>
+<div class="card"><img src="https://via.placeholder.com/400x300?text=Memory+2"></div>
+<div class="card"><img src="https://via.placeholder.com/400x300?text=Memory+3"></div>
+</section>
+
+<section class="final" id="final">
+🎆 HAPPY BIRTHDAY BADRI 🎆<br><br>Stay blessed & keep shining ✨
+</section>
+
+<footer>Made with ❤️ for Badri</footer>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+function speakMessage(){
+ const msg = new SpeechSynthesisUtterance("Happy Birthday Badri! You are my best friend and brother. Stay blessed and keep smiling!");
+ msg.rate = 0.9;
+ msg.pitch = 1;
+ speechSynthesis.speak(msg);
+}
+
+function startExperience(){
+ document.getElementById('music').play();
+ speakMessage();
+ let msgs=document.querySelectorAll('.msg');
+ msgs.forEach((m,i)=>{
+  setTimeout(()=>{m.classList.add('show')},i*1200);
+ });
+ setTimeout(()=>{
+  document.getElementById('final').style.opacity=1;
+  fireworks();
+ },msgs.length*1200+1000);
+}
+
+const target=new Date("April 10, 2026 00:00:00").getTime();
+setInterval(()=>{
+ let now=new Date().getTime();
+ let diff=target-now;
+ let d=Math.floor(diff/(1000*60*60*24));
+ let h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+ let m=Math.floor((diff%(1000*60*60))/(1000*60));
+ let s=Math.floor((diff%(1000*60))/1000);
+ document.getElementById("countdown").innerHTML=`⏳ ${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+function fireworks(){
+ for(let i=0;i<150;i++){
+  setTimeout(()=>{
+   ctx.beginPath();
+   ctx.arc(Math.random()*canvas.width,Math.random()*canvas.height,2,0,2*Math.PI);
+   ctx.fillStyle='hsl('+Math.random()*360+',100%,60%)';
+   ctx.fill();
+  },i*10);
+ }
+}
+
+</script>
+
+</body>
+</html>
